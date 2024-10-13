@@ -53,7 +53,7 @@ export default function Navbar({
             </a>
 
             <ul className="menu">
-                {user.user.role == UserRole.Admin ? (
+                {user.user?.role == UserRole.Admin ? (
                     <>
                         {/* admin view */}
                         <li className="mt-16">

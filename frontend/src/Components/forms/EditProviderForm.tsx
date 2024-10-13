@@ -62,7 +62,16 @@ export default function EditProviderForm({
             setErrorMessage('Failed to get access key');
             return;
         }
+<<<<<<< HEAD
+
+        if (!(response.data instanceof Array)) {
+            setAccessKey(response.data.access_key);
+        }
+||||||| parent of 58b7080 (wip)
         setAccessKey(response.data['access_key']);
+=======
+        setAccessKey(response.data.access_key);
+>>>>>>> 58b7080 (wip)
         setShowAccessKey(true);
     };
 
@@ -105,7 +114,7 @@ export default function EditProviderForm({
     return (
         <div>
             <CloseX close={() => closeAndReset()} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={() => void handleSubmit(onSubmit)}>
                 <TextInput
                     label="Name"
                     register={register}
@@ -174,8 +183,9 @@ export default function EditProviderForm({
                                     {...register('access_key', {
                                         required: 'Access Key is required',
                                         value: accessKey,
-                                        onChange: (e) =>
-                                            setAccessKey(e.target.value)
+                                        onChange: (e: InputEvent) => {
+                                            setAccessKey(e.target.value);
+                                        }
                                     })}
                                 />
                             ) : (
@@ -190,20 +200,20 @@ export default function EditProviderForm({
                                 <EyeSlashIcon
                                     className="w-4 z-10 top-4 right-4 absolute"
                                     onClick={() => {
-                                        console.log(accessKey),
-                                            setAccessKey(accessKey),
-                                            setShowAccessKey(false);
+                                        console.log(accessKey);
+                                        setAccessKey(accessKey);
+                                        setShowAccessKey(false);
                                     }}
                                 />
                             ) : (
                                 <EyeIcon
                                     className="w-4 z-10 top-4 right-4 absolute"
-                                    onClick={getAccessKey}
+                                    onClick={() => void getAccessKey}
                                 />
                             )}
                         </div>
                         <div className="text-error text-sm">
-                            {errors.access_key && errors.access_key?.message}
+                            {errors.access_key?.message}
                         </div>
                     </label>
                 </div>

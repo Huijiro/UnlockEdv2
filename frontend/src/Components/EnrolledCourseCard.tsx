@@ -27,14 +27,14 @@ export default function EnrolledCourseCard({
 }: CourseCard) {
     const coverImage = course.thumbnail_url;
     const url = course.external_url;
-    let status: CourseStatus;
+    let status: CourseStatus = CourseStatus.Pending;
     if (course.course_progress == 100) status = CourseStatus.Completed;
 
     function updateFavorite(e: React.MouseEvent) {
         e.preventDefault();
         API.put(`courses/${course.id}/save`, {})
             .then((response) => {
-                callMutate();
+                if (callMutate) callMutate();
                 console.log(response);
             })
             .catch((error) => {
@@ -73,9 +73,17 @@ export default function EnrolledCourseCard({
                 ) : (
                     <div className="w-1/3">
                         <ProgressBar
+<<<<<<< HEAD
+                            percent={Math.floor(course.course_progress)}
+||||||| parent of 58b7080 (wip)
                             percent={Math.floor(
                                 course.course_progress as number
                             )}
+=======
+                            percent={Math.floor(
+                                course.course_progress
+                            )}
+>>>>>>> 58b7080 (wip)
                         />
                     </div>
                 )}
