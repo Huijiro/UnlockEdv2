@@ -5,12 +5,17 @@ import {
     ToastState
 } from '@/common';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { CloseX, DropdownInput, SubmitButton, TextInput } from '../inputs';
 import API from '@/api/api';
 
 interface ProviderInputs {
+    [key: string]:
+        | string
+        | ProviderPlatformType
+        | ProviderPlatformState
+        | number;
     id: number;
     name: string;
     type: ProviderPlatformType;
@@ -46,7 +51,7 @@ export default function EditProviderForm({
         }
     });
 
-    const getAccessKey = async () => {
+    const getAccessKey = () => {
         if (showAccessKey) {
             setShowAccessKey(false);
             return;
@@ -55,23 +60,7 @@ export default function EditProviderForm({
             setShowAccessKey(true);
             return;
         }
-        const response = await API.get<ProviderPlatform>(
-            `provider-platforms/${provider.id}`
-        );
-        if (!response.success) {
-            setErrorMessage('Failed to get access key');
-            return;
-        }
-<<<<<<< HEAD
-
-        if (!(response.data instanceof Array)) {
-            setAccessKey(response.data.access_key);
-        }
-||||||| parent of 58b7080 (wip)
-        setAccessKey(response.data['access_key']);
-=======
-        setAccessKey(response.data.access_key);
->>>>>>> 58b7080 (wip)
+        setAccessKey(provider.access_key);
         setShowAccessKey(true);
     };
 
@@ -183,8 +172,10 @@ export default function EditProviderForm({
                                     {...register('access_key', {
                                         required: 'Access Key is required',
                                         value: accessKey,
-                                        onChange: (e: InputEvent) => {
-                                            setAccessKey(e.target.value);
+                                        onChange: (e: FormEvent) => {
+                                            setAccessKey(
+                                                e.currentTarget.nodeValue ?? ''
+                                            );
                                         }
                                     })}
                                 />
