@@ -1,16 +1,19 @@
-import { PropsWithChildren, useState } from 'react';
+import { useState } from 'react';
 import Navbar from '@/Components/Navbar';
 import PageNav from '@/Components/PageNav';
+import { Outlet, useLocation } from 'react-router-dom';
 
-export default function AuthenticatedLayout({
-    title,
-    path,
-    children
-}: PropsWithChildren<{ title: string; path?: string[] }>) {
+export default function AuthenticatedLayout() {
     // We have three states we need to factor for.
     // 1. If the nav is open & pinned (Large screens only & uses lg:drawer-open)
     // 2. If the nav is open & not pinned (Large screens only)
     // 3. If the nav is not open. (Small screens only)
+    const location = useLocation();
+
+    const path = location.pathname
+        .split('/')
+        .slice(1)
+        .map((p) => p.replace(/-/g, ' '));
 
     const getInitialPinnedState = () => {
         const storedNavPinned = localStorage.getItem('navPinned') ?? 'true';
@@ -34,18 +37,17 @@ export default function AuthenticatedLayout({
 
     return (
         <div className="font-lato">
-            <div title={title} />
-            <div
-                className={`drawer drawer-mobile  ${isNavPinned ? 'lg:drawer-open' : ''} `}
-            >
+            <div className={`drawer ${isNavPinned ? 'lg:drawer-open' : ''} `}>
                 <div className="drawer-content flex flex-col border-l border-grey-1">
                     <main className="w-full min-h-screen bg-background flex flex-col">
                         <PageNav
-                            path={path ?? []}
+                            path={path}
                             showOpenMenu={!isNavPinned}
                             onShowNav={showNav}
                         />
-                        <div className="grow">{children}</div>
+                        <div className="grow">
+                            <Outlet />
+                        </div>
                     </main>
                 </div>
                 <input

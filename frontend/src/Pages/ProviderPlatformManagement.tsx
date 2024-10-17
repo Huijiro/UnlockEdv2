@@ -3,7 +3,6 @@ import AddProviderForm from '@/Components/forms/AddProviderForm';
 import EditProviderForm from '@/Components/forms/EditProviderForm';
 import { AxiosError } from 'axios';
 import Modal from '@/Components/Modal';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {
     ModalType,
     OidcClient,
@@ -150,10 +149,7 @@ export default function ProviderPlatformManagement() {
     };
 
     return (
-        <AuthenticatedLayout
-            title="Provider Platform Management"
-            path={['Provider Platform Management']}
-        >
+        <>
             <div className="px-8 py-4">
                 <h1>Provider Platforms</h1>
                 <div className="flex flex-row justify-between">
@@ -282,6 +278,6 @@ export default function ProviderPlatformManagement() {
                     }
                 />
             )}
-        </AuthenticatedLayout>
+        </>
     );
 }

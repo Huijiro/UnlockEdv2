@@ -1,5 +1,4 @@
 import { useAuth } from '@/useAuth';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import EnrolledCourseCard from '@/Components/EnrolledCourseCard';
 import { useState } from 'react';
 import ToggleView from '@/Components/ToggleView';
@@ -53,14 +52,14 @@ export default function MyCourses() {
     };
 
     return (
-        <AuthenticatedLayout title="My Courses" path={['My Courses']}>
+        <>
             <div className="px-8 py-4">
                 <h1>My Courses</h1>
                 <div className="flex flex-row gap-16 w-100 border-b-2 border-grey-2 py-3">
                     {Object.entries(tabTypes).map(([k, v]) => (
                         <button
                             className={
-                                activeTab == v ? 'text-teal-4 font-bold' : ''
+                                activeTab == v ? 'text-primary font-bold' : ''
                             }
                             onClick={() => setActiveTab(v)}
                             key={k}
@@ -113,6 +112,6 @@ export default function MyCourses() {
                     )}
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
