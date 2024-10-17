@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import {
     ArrowPathRoundedSquareIcon,
     TrashIcon,
@@ -152,7 +153,10 @@ export default function StudentManagement() {
     };
 
     return (
-        <>
+        <AuthenticatedLayout
+            title="Student Management"
+            path={['Student Management']}
+        >
             <div className="flex flex-col space-y-6 overflow-x-auto rounded-lg p-4">
                 <h1>Student Management</h1>
                 <div className="flex justify-between">
@@ -187,7 +191,7 @@ export default function StudentManagement() {
                     </div>
                 </div>
                 <div className="relative w-full" style={{ overflowX: 'clip' }}>
-                    <table className="table-2 mb-4">
+                    <table className="table-2">
                         <thead>
                             <tr className="grid-cols-4 px-4">
                                 <th className="justify-self-start">Name</th>
@@ -351,6 +355,6 @@ export default function StudentManagement() {
             />
             {/* Toasts */}
             {displayToast && <Toast {...toast} />}
-        </>
+        </AuthenticatedLayout>
     );
 }

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import {
     ArrowPathRoundedSquareIcon,
     PencilIcon,
@@ -168,7 +169,7 @@ export default function Users() {
     };
 
     return (
-        <>
+        <AuthenticatedLayout title="Users" path={['Users']}>
             <div className="flex flex-col space-y-6 overflow-x-auto rounded-lg p-4">
                 <div className="flex justify-between">
                     <div className="flex flex-row gap-x-2">
@@ -364,6 +365,6 @@ export default function Users() {
             />
             {/* Toasts */}
             {displayToast && <Toast {...toast} />}
-        </>
+        </AuthenticatedLayout>
     );
 }

@@ -1,7 +1,7 @@
 import '@/bootstrap';
 import '@/css/app.css';
 import React from 'react';
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Welcome from '@/Pages/Welcome';
 import Dashboard from '@/Pages/Dashboard';
 import Login from '@/Pages/Auth/Login';
@@ -20,16 +20,10 @@ import AdminManagement from '@/Pages/AdminManagement.tsx';
 import StudentManagement from '@/Pages/StudentManagement.tsx';
 import { checkDefaultFacility, checkExistingFlow, useAuth } from '@/useAuth';
 import { UserRole } from '@/common';
-import Loading from './Components/Loading.tsx';
-import AuthenticatedLayout from './Layouts/AuthenticatedLayout.tsx';
 
-const WithAuth: React.FC = () => {
-    return (
-        <AuthProvider>
-            <Outlet />
-        </AuthProvider>
-    );
-};
+function WithAuth({ children }: { children: React.ReactNode }) {
+    return <AuthProvider>{children}</AuthProvider>;
+}
 
 const AdminOnly: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { user } = useAuth();
@@ -43,127 +37,102 @@ const AdminOnly: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     }
 };
 
-function WithAdmin() {
+function WithAdmin({ children }: { children: React.ReactNode }) {
     return (
-        <AuthProvider>
-            <AdminOnly>
-                <Outlet />
-            </AdminOnly>
-        </AuthProvider>
+        <WithAuth>
+            <AdminOnly>{children}</AdminOnly>
+        </WithAuth>
     );
 }
 
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Welcome />,
-        errorElement: <Error />
-    },
-    {
-        path: '/login',
-        element: <Login />,
-        errorElement: <Error />,
-        loader: checkExistingFlow
-    },
-    {
-        path: '/',
-        element: <WithAuth />,
-        children: [
-            {
-                path: '',
-                element: <AuthenticatedLayout />,
-                children: [
-                    {
-                        path: '/dashboard',
-                        element: <Dashboard />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/consent',
-                        element: <Consent />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/my-courses',
-                        element: <MyCourses />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/my-progress',
-                        element: <MyProgress />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/course-catalog',
-                        element: <CourseCatalog />,
-                        errorElement: <Error />
-                    }
-                ]
-            },
-            {
-                path: '/reset-password',
-                element: <ResetPassword />,
-                errorElement: <Error />,
-                loader: checkDefaultFacility
-            }
-        ]
-    },
-    {
-        path: '/',
-        element: <WithAdmin />,
-        children: [
-            {
-                path: '',
-                element: <AuthenticatedLayout />,
-                children: [
-                    {
-                        path: '/dashboard',
-                        element: <Dashboard />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/student-management',
-                        element: <StudentManagement />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/admin-management',
-                        element: <AdminManagement />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/resources-management',
-                        element: <ResourcesManagement />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/provider-platform-management',
-                        element: <ProviderPlatformManagement />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '/provider-users/:providerId',
-                        element: <ProviderUserManagement />,
-                        errorElement: <Error />
-                    },
-                    {
-                        path: '*',
-                        element: <UnauthorizedNotFound which="notFound" />
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        path: '/error',
-        element: <Error />
-    }
-]);
-
 export default function App() {
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Welcome />,
+            errorElement: <Error />
+        },
+        {
+            path: '/login',
+            element: <Login />,
+            errorElement: <Error />,
+            loader: checkExistingFlow
+        },
+        {
+            path: '/dashboard',
+            element: WithAuth({ children: <Dashboard /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/student-management',
+            element: WithAdmin({ children: <StudentManagement /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/admin-management',
+            element: WithAdmin({ children: <AdminManagement /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/resources-management',
+            element: WithAdmin({ children: <ResourcesManagement /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/reset-password',
+            element: WithAuth({ children: <ResetPassword /> }),
+            errorElement: <Error />,
+            loader: checkDefaultFacility
+        },
+        {
+            path: '/consent',
+            element: WithAuth({
+                children: <Consent />
+            }),
+            errorElement: <Error />
+        },
+        {
+            path: '/provider-platform-management',
+            element: WithAdmin({ children: <ProviderPlatformManagement /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/my-courses',
+            element: WithAuth({ children: <MyCourses /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/my-progress',
+            element: WithAuth({ children: <MyProgress /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/course-catalog',
+            element: WithAuth({ children: <CourseCatalog /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/provider-users/:providerId',
+            element: WithAdmin({ children: <ProviderUserManagement /> }),
+            errorElement: <Error />
+        },
+        {
+            path: '/error',
+            element: <Error />
+        },
+        {
+            path: '/*',
+            element: WithAuth({
+                children: <UnauthorizedNotFound which="notFound" />
+            })
+        }
+    ]);
+
     if (import.meta.hot) {
         import.meta.hot.dispose(() => router.dispose());
     }
 
-    return <RouterProvider router={router} fallbackElement={<Loading />} />;
+    return (
+        <RouterProvider router={router} fallbackElement={<p>Loading...</p>} />
+    );
 }

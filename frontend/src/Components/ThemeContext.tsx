@@ -25,14 +25,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('theme');
-        if (!storedTheme) {
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        }
-
         if (storedTheme) {
             setTheme(storedTheme);
             document.documentElement.setAttribute('data-theme', storedTheme);

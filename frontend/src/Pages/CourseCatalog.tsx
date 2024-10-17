@@ -1,5 +1,6 @@
 import { useAuth } from '@/useAuth';
 import ToggleView from '@/Components/ToggleView';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { useState } from 'react';
 import CatalogCourseCard from '@/Components/CatalogCourseCard';
 import SearchBar from '@/Components/inputs/SearchBar';
@@ -29,29 +30,27 @@ export default function CourseCatalog() {
     }
 
     return (
-        <>
+        <AuthenticatedLayout title="Course Catalog" path={['Course Catalog']}>
             <div className="px-8 py-4">
                 <div className="flex flex-row justify-between">
                     <h1>Course Catalog</h1>
-                </div>
-                <div className="flex flex-row items-center mt-4 justify-between">
-                    <div className="flex flex-row gap-x-2">
-                        <SearchBar
-                            searchTerm={searchTerm}
-                            changeCallback={handleSearch}
-                        />
-                        <DropdownControl
-                            label="order"
-                            setState={setOrder}
-                            enumType={{
-                                Ascending: 'asc',
-                                Descending: 'desc'
-                            }}
-                        />
-                    </div>
                     <ToggleView
                         activeView={activeView}
                         setActiveView={setActiveView}
+                    />
+                </div>
+                <div className="flex flex-row items-center mt-4 justify-between">
+                    <SearchBar
+                        searchTerm={searchTerm}
+                        changeCallback={handleSearch}
+                    />
+                    <DropdownControl
+                        label="order"
+                        setState={setOrder}
+                        enumType={{
+                            Ascending: 'asc',
+                            Descending: 'desc'
+                        }}
                     />
                 </div>
                 {/* render on gallery or list view */}
@@ -76,6 +75,6 @@ export default function CourseCatalog() {
                     )}
                 </div>
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }

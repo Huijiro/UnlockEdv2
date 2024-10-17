@@ -19,75 +19,79 @@ import {
     StudentDashboardJoin
 } from '@/common';
 import { AxiosError } from 'axios';
-import Loading from '@/Components/Loading';
 
-const ExploreCourseCatalogCard = () => {
-    const navigate = useNavigate();
-    return (
-        <div className="card card-compact bg-inner-background relative">
-            <figure className="h-[124px] bg-teal-3">
-                <BuildingStorefrontIcon className="h-20 text-background" />
-            </figure>
-            <div className="card-body gap-0.5">
-                <h3 className="card-title text-sm">Explore Course Catalog</h3>
-                <p className="body-small line-clamp-4">
-                    Looking for more content to engage with? Browse courses
-                    offered at your facility.
-                </p>
-                <a
-                    className="flex flex-row gap-1 body-small text-teal-3 mt-2"
-                    onClick={() => navigate(`/course-catalog`)}
-                >
-                    Explore courses
-                    <ArrowRightIcon className="w-4" />
-                </a>
-            </div>
-        </div>
-    );
-};
-
-const PopularCoursesCard = ({ topCourses }: { topCourses: string[] }) => {
-    return (
-        <div
-            className={`card card-compact bg-inner-background overflow-hidden relative`}
-        >
-            <div className="card-body gap-0.5">
-                <h3 className="card-title text-sm">
-                    Popular Courses on UnlockEd
-                </h3>
-                <ul className="space-y-3 mt-3">
-                    {topCourses.map((name: string, idx: number) => {
-                        return (
-                            <li
-                                className="body-small flex flex-row gap-2 content-center"
-                                key={idx}
-                            >
-                                <AcademicCapIcon className="w-4" />
-                                <p className="line-clamp-1">{name}</p>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        </div>
-    );
-};
 export default function StudentDashboard() {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const { data, error, isLoading } = useSWR<
         ServerResponse<StudentDashboardJoin>,
         AxiosError
     >(`/api/users/${user?.id}/student-dashboard`);
     const userData = data?.data as StudentDashboardJoin;
 
-    if (isLoading) return <Loading />;
+    if (isLoading) return <div>Loading...</div>;
     if (error) return <Error />;
+
+    const ExploreCourseCatalogCard = () => {
+        return (
+            <div className="card card-compact bg-inner-background relative">
+                <figure className="h-[124px] bg-teal-3">
+                    <BuildingStorefrontIcon className="h-20 text-background" />
+                </figure>
+                <div className="card-body gap-0.5">
+                    <h3 className="card-title text-sm">
+                        Explore Course Catalog
+                    </h3>
+                    <p className="body-small line-clamp-4">
+                        Looking for more content to engage with? Browse courses
+                        offered at your facility.
+                    </p>
+                    <a
+                        className="flex flex-row gap-1 body-small text-teal-3 mt-2"
+                        onClick={() => navigate(`/course-catalog`)}
+                    >
+                        Explore courses
+                        <ArrowRightIcon className="w-4" />
+                    </a>
+                </div>
+            </div>
+        );
+    };
+
+    const PopularCoursesCard = () => {
+        return (
+            <div
+                className={`card card-compact bg-inner-background overflow-hidden relative`}
+            >
+                <div className="card-body gap-0.5">
+                    <h3 className="card-title text-sm">
+                        Popular Courses on UnlockEd
+                    </h3>
+                    <ul className="space-y-3 mt-3">
+                        {userData.top_courses.map(
+                            (name: string, idx: number) => {
+                                return (
+                                    <li
+                                        className="body-small flex flex-row gap-2 content-center"
+                                        key={idx}
+                                    >
+                                        <AcademicCapIcon className="w-4" />
+                                        <p className="line-clamp-1">{name}</p>
+                                    </li>
+                                );
+                            }
+                        )}
+                    </ul>
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div className="flex w-full">
-            <div className="px-8 py-4 flex-grow">
+            <div className="px-8 py-4">
                 <h1 className="text-5xl">Hi, {user?.name_first}!</h1>
-                <h2 className="mt-2"> Pick Up Where You Left Off</h2>
+                <h2 className="mt-7"> Pick Up Where You Left Off</h2>
                 <div className="mt-3 bg-base-teal p-6 card">
                     <div
                         className={`gap-5 grid grid-cols-3 ${userData.recent_courses.length < 2 ? '!grid-cols-2' : ''}`}
@@ -107,9 +111,7 @@ export default function StudentDashboard() {
                             <ExploreCourseCatalogCard />
                         )}
                         {userData.recent_courses.length < 2 && (
-                            <PopularCoursesCard
-                                topCourses={userData.top_courses}
-                            />
+                            <PopularCoursesCard />
                         )}
                     </div>
                 </div>
@@ -177,19 +179,14 @@ export default function StudentDashboard() {
                     {!error && !isLoading && (
                         <div className="flex flex-col gap-3">
                             {userData.enrollments ? (
-                                userData?.enrollments
-                                    ?.sort((a, b) =>
-                                        a.total_activity_time >
-                                        b.total_activity_time
-                                            ? -1
-                                            : 1
-                                    )
-                                    .map((course: CurrentEnrollment, index) => (
+                                userData?.enrollments?.map(
+                                    (course: CurrentEnrollment, index) => (
                                         <CurrentlyEnrolledClass
                                             course={course}
                                             key={index}
                                         />
-                                    ))
+                                    )
+                                )
                             ) : (
                                 <p className="body-small">
                                     You are currently not enrolled in any

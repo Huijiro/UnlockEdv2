@@ -1,10 +1,12 @@
 import Pagination from '../Components/Pagination';
+import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import DropdownControl from '@/Components/inputs/DropdownControl';
 import SearchBar from '../Components/inputs/SearchBar';
 import { Activity, ServerResponseMany } from '@/common';
 import { useState } from 'react';
 import useSWR from 'swr';
 import { AxiosError } from 'axios';
+// import { useDebounceValue } from "usehooks-ts";
 
 export default function UserActivity() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +28,10 @@ export default function UserActivity() {
     };
 
     return (
-        <>
+        <AuthenticatedLayout
+            title="User Activity"
+            path={['Settings', 'User Activity']}
+        >
             <div className="flex flex-col space-y-6 overflow-x-auto rounded-lg p-4">
                 <div className="flex justify-between">
                     <div className="flex space-x-4">
@@ -119,6 +124,6 @@ export default function UserActivity() {
                     <span className="text-center text-warning">No results</span>
                 )}
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }

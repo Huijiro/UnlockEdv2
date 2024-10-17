@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { AxiosError } from 'axios';
 import StatsCard from '@/Components/StatsCard';
 import UserActivityMap from '@/Components/UserActivityMap';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import DarkGreenPill from '@/Components/pill-labels/DarkGreenPill';
 import TealPill from '@/Components/pill-labels/TealPill';
 import useSWR from 'swr';
@@ -65,7 +66,7 @@ export default function MyProgress() {
     //}
 
     return (
-        <>
+        <AuthenticatedLayout title="My Progress" path={['My Progress']}>
             <div className="px-8 py-4">
                 <h1>My Progress</h1>
                 {courseData && (
@@ -229,6 +230,6 @@ export default function MyProgress() {
                     </>
                 )}
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }
