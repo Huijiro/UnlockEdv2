@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import { useParams } from 'react-router-dom';
 import {
     ModalType,
@@ -192,13 +191,7 @@ export default function ProviderUserManagement() {
     }, [providerId]);
 
     return (
-        <AuthenticatedLayout
-            title="Users"
-            path={[
-                'Provider Platforms',
-                `Provider User Management${provider ? ' (' + provider.name + ')' : ''}`
-            ]}
-        >
+        <>
             <div className="flex flex-col space-y-6 overflow-x-auto rounded-lg p-4">
                 <div className="flex justify-between">
                     <SearchBar
@@ -367,6 +360,6 @@ export default function ProviderUserManagement() {
                 }
             />
             {displayToast && <Toast {...toast} />}
-        </AuthenticatedLayout>
+        </>
     );
 }

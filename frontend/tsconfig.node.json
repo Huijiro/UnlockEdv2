@@ -1,7 +1,10 @@
 {
+    "$schema": "https://json.schemastore.org/tsconfig",
     "compilerOptions": {
         "target": "ESNext",
         "lib": ["ES2023"],
+        "allowJs": true,
+        "strictNullChecks": true,
         "module": "ESNext",
         "skipLibCheck": true,
         /* Bundler mode */
@@ -20,5 +23,10 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true
     },
-    "include": ["vite.config.ts"]
+    "include": [
+        "vite.config.ts",
+        "eslint.config.mjs",
+        "tailwind.config.mjs",
+        "postcss.config.cjs"
+    ]
 }

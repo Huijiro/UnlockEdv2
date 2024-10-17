@@ -49,14 +49,14 @@ export default function EnrolledCourseCard({
                 rel="noopener noreferrer"
             >
                 <div className="flex flex-row gap-3 items-center">
-                    <div onClick={(e) => updateFavorite(e)}>
+                    <button onClick={(e) => updateFavorite(e)}>
                         {!recent &&
                             (course.is_favorited ? (
                                 <StarIcon className="h-5 text-primary-yellow"></StarIcon>
                             ) : (
                                 <StarIconOutline className="h-5 text-header-text"></StarIconOutline>
                             ))}
-                    </div>
+                    </button>
                     <h2>{course.course_name}</h2>
                     <p className="body">|</p>
                     <p className="body">{course.provider_platform_name}</p>
@@ -70,7 +70,7 @@ export default function EnrolledCourseCard({
                         <ClockIcon className="h-4" /> Course Pending
                     </div>
                 ) : (
-                    <div className="w-1/3">
+                    <div>
                         <ProgressBar
                             percent={Math.floor(course.course_progress)}
                         />

@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import useSWR from 'swr';
 
-import AuthenticatedLayout from '../Layouts/AuthenticatedLayout';
 import {
     ArrowPathRoundedSquareIcon,
     TrashIcon,
@@ -153,10 +152,7 @@ export default function AdminManagement() {
     };
 
     return (
-        <AuthenticatedLayout
-            title="Admin Management"
-            path={['Admin Management']}
-        >
+        <>
             <div className="flex flex-col space-y-6 overflow-x-auto rounded-lg p-4">
                 <h1>Admin Management</h1>
                 <div className="flex justify-between">
@@ -191,7 +187,7 @@ export default function AdminManagement() {
                     </div>
                 </div>
                 <div className="relative w-full" style={{ overflowX: 'clip' }}>
-                    <table className="table-2">
+                    <table className="table-2 mb-4">
                         <thead>
                             <tr className="border-gray-600">
                                 <th className="flex">
@@ -349,6 +345,6 @@ export default function AdminManagement() {
             />
             {/* Toasts */}
             {displayToast && <Toast {...toast} />}
-        </AuthenticatedLayout>
+        </>
     );
 }

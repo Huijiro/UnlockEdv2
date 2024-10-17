@@ -17,6 +17,7 @@ const WeekActivityChart = ({ data }: { data: RecentActivity[] }) => {
     const lineColor = theme == 'light' ? '#18ABA0' : '#61BAB2';
     const gridColor = theme == 'light' ? '#ECECEC' : '#737373';
     const backgroundColor = theme == 'light' ? '#FFFFFF' : '#0F2926';
+    const strokeColor = theme == 'light' ? '#666' : '#CCC';
 
     const result: RecentActivity[] = Array.from(
         { length: 7 },
@@ -92,6 +93,7 @@ const WeekActivityChart = ({ data }: { data: RecentActivity[] }) => {
                         position: 'left',
                         offset: -10
                     }}
+                    stroke={strokeColor}
                 />
                 <Tooltip
                     labelClassName="text-body"

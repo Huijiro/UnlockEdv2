@@ -13,6 +13,7 @@ import {
     UsersIcon
 } from '@heroicons/react/24/solid';
 import { useAuth } from '@/useAuth';
+import { Link } from 'react-router-dom';
 
 export default function Navbar({
     isPinned,
@@ -48,81 +49,71 @@ export default function Navbar({
                 )}
             </div>
 
-            <a href="/" className="mt-16">
+            <Link to="/" className="mt-16">
                 <Brand />
-            </a>
+            </Link>
 
             <ul className="menu">
                 {user.user?.role == UserRole.Admin ? (
                     <>
                         {/* admin view */}
                         <li className="mt-16">
-                            <a href="/dashboard">
+                            <Link to="/dashboard">
                                 <HomeIcon className="w-4" /> Dashboard
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/student-management">
+                            <Link to="/student-management">
                                 <AcademicCapIcon className="h-4" />
                                 Students
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/admin-management">
+                            <Link to="/admin-management">
                                 <UsersIcon className="h-4" />
-                                Admins
-                            </a>
+                                <span className="hidden lg:inline">Admins</span>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/resources-management">
+                            <Link to="/resources-management">
                                 <ArchiveBoxIcon className="h-4" />
                                 Resources
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a href="/provider-platform-management">
+                            <Link to="/provider-platform-management">
                                 <RectangleStackIcon className="h-4" />
                                 Platforms
-                            </a>
+                            </Link>
                         </li>
                     </>
                 ) : (
                     <>
                         {/* student view */}
                         <li className="mt-16">
-                            <a href="/dashboard">
+                            <Link to="/dashboard">
                                 <HomeIcon className="w-4" /> Dashboard
-                            </a>
+                            </Link>
                         </li>
                         <li className="">
-                            <a href="/my-courses">
+                            <Link to="/my-courses">
                                 <BookOpenIcon className="w-4" /> My Courses
-                            </a>
+                            </Link>
                         </li>
                         <li className="">
-                            <a href="/my-progress">
+                            <Link to="/my-progress">
                                 <TrophyIcon className="w-4" /> My Progress
-                            </a>
+                            </Link>
                         </li>
                         <li className="">
-                            <a href="/course-catalog">
+                            <Link to="/course-catalog">
                                 <BuildingStorefrontIcon className="w-4" />{' '}
                                 Course Catalog
-                            </a>
+                            </Link>
                         </li>
                     </>
                 )}
             </ul>
-            {/* <div className="">
-                <ul className="menu mb-5">
-                    <li>
-                        <button onClick={() => handleLogout()}>
-                            <ArrowRightEndOnRectangleIcon className="h-4" />
-                            Logout
-                        </button>
-                    </li>
-                </ul>
-            </div> */}
         </div>
     );
 }

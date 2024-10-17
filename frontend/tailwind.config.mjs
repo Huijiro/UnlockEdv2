@@ -1,3 +1,6 @@
+import daisyui from 'daisyui';
+import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
 export default {
     content: ['./src/**/*.tsx'],
 
@@ -95,9 +98,5 @@ export default {
         }
     },
 
-    plugins: [
-        require('@tailwindcss/forms'),
-        require('@tailwindcss/typography'),
-        require('daisyui')
-    ]
+    plugins: [forms, typography, daisyui]
 };
